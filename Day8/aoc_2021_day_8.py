@@ -54,4 +54,3 @@ for value in range(len(crabs_horizontal_pos)):
 print(min(total_fuel_estimates))
 
 # I am still thinking about the range of values to iterate for optimisation
-# it can go from min to max

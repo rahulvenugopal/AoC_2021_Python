@@ -30,6 +30,25 @@ while days <256:
 len(age_lantern_list)
 
 #%% #%% --- Day 6: Lanternfish --- Part 2
-# that monent when you realise list won't save you
+# that moment when you realise creating lots of lantern fishes won't save you
 
+# create an array to keep track of count of lanterns fish of different ages
+import numpy as np
 
+# test lantern_age_array = np.array([0,1,1,2,1,0,0,0,0])
+
+lantern_age_array = np.array(age_lantern_list)
+
+from collections import Counter
+count_ages_lantern_fishes = Counter(lantern_age_array)
+
+#%% getting the sorted values as an array of 0-8
+import numpy as np
+lantern_age_array = np.array([0,193,29,27,25,26,0,0,0],dtype='int64')
+
+for days in range(256):
+    lantern_age_array = np.roll(lantern_age_array,-1)
+    if lantern_age_array[8] != 0:
+        lantern_age_array[6] += lantern_age_array[8]
+    print(days)
+    print(sum(lantern_age_array))
