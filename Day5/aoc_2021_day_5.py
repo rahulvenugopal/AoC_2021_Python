@@ -12,42 +12,39 @@ file = open('input.txt','r')
 data = file.readlines()
 data = [line.rstrip() for line in data]
 
-#%%
+# create a square array lists with all zeros
 
-# throwing away the arrow
-for locs,lines in enumerate(data):
-    data[locs] = lines.replace(' -> ', ',')
-
-# making a list of integers for x1,y1,x2,y2
-for locs, entries in enumerate(data):
-    data[locs] = list(map(int, entries.split(",")))
-
-# Bresenham algorithm gets us coordinates of all points between two points
-from bresenham import bresenham
-import matplotlib.pyplot as plt
-from itertools import chain
-from collections import Counter
 import numpy as np
+grid_of_vents = np.zeros((999,999))
 
-coordinates_vents = []
-for locs, coordinates in enumerate(data):
-    coordinates_vents.append(list(bresenham(*data[locs])))
+for indices,entries in enumerate(data)  :
+    print(indices)
+    x1,y1 = entries.split('->')[0].rstrip().lstrip().split(',')
+    x2,y2 = entries.split('->')[1].rstrip().lstrip().split(',')
 
-# getting all x and y locations of points
-xs = [[x[0] for x in set1] for set1 in coordinates_vents]
-ys = [[x[1] for x in set1] for set1 in coordinates_vents]
+    if x1 == x2 and y1 != y2:
+        to_fill = list(range(min(int(y1), int(y2)), max(int(y1), int(y2))+1))
 
-xs = list(chain(*xs))
-ys = list(chain(*ys))
+        # add 1 to indicate vent locations
+        for entries in to_fill:
+            grid_of_vents[entries][int(x1)] = grid_of_vents[entries][int(x1)] + 1
 
-plt.plot(xs, ys, 'steelblue', alpha = 0.8)
-plt.show()
+    if y1 == y2 and x1 != x2:
+        to_fill = list(range(min(int(x1), int(x2)), max(int(x1), int(x2))+1))
 
-# merging xs and ys as tuple
-all_points_spots = tuple(zip(xs, ys))
+        # add 1 to indicate vent locations
+        for entries in to_fill:
+            grid_of_vents[int(y1)][entries] = grid_of_vents[int(y1)][entries] + 1
 
-unique_counts = Counter(chain(all_points_spots))
-counts_of_points_overlap = np.array(list(unique_counts.values()))
+# count indices in grid which are greater than 2
+counter = 0
 
-print(sum(counts_of_points_overlap >= 2))
+for rows in range(len(grid_of_vents)):
+    for columns in range(len(grid_of_vents)):
+        if grid_of_vents[rows][columns] >1:
+            counter += 1
+
+print("Points with atleast two lines cross is " + str(counter))
+
+#%% --- Day 5: Hydrothermal Venture --- Part 2
 
