@@ -15,6 +15,7 @@ stack_of_crates = data[0:8]
 
 list_of_crates = []
 
+# the row length is 36 characters in which every 6th item is the code
 for stacks in range(9):
     temp_list_of_crates = []
     for rows in range(len(stack_of_crates)):
